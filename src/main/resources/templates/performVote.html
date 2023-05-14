@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Perform a vote</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+<div th:each="user : ${users}">
+    Click to vote for:
+    <a th:href="@{/voteFor(id=${user.id})}" th:text="${user.firstname}">Click</a>
+</div>
+
+<div>
+    <button type="button" id="logout-button">Logout</button>
+</div>
+
+
+
+
+<script>
+        $(document).ready(function() {
+            // Logout button click event
+            $('#logout-button').click(function() {
+                // Remove the JWT token from local storage
+                localStorage.removeItem('access_token');
+                // Redirect to the logout page or any desired page
+                window.location.href = '/';
+            });
+
+
+
+        });
+    </script>
+</body>
+</html>

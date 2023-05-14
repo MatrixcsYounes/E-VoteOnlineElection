@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="jwt-decode.js"></script>
+</head>
+<body>
+<h2>Login</h2>
+
+<div id="login-message"></div>
+
+<form id="login-form">
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+    </div>
+    <div>
+        <button type="button" id="login-button">Login</button>
+    </div>
+
+    <div>
+        <button type="button" id="registerbutton">Register</button>
+    </div>
+
+
+</form>
+
+<script>
+        $(document).ready(function() {
+            // Check if JWT token already exists in local storage
+            var jwtToken = localStorage.getItem('access_token');
+            if (jwtToken) {
+                var jwt = jwt_decode(jwtToken);
+                var email = jwt.sub;
+                window.location.href = '/login/doLogin/' + email;
+            }
+
+            $('#login-button').click(function() {
+                var email = $('#email').val();
+                var password = $('#password').val();
+
+                var loginData = {
+                    email: email,
+                    password: password
+                };
+
+                $.ajax({
+                    url: '/login',
+                    type: 'POST',
+                    data: JSON.stringify(loginData),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        $('#login-message').text("Login successful!");
+
+                        // Save JWT token in local storage
+                        localStorage.setItem('access_token', response.access_token);
+
+                        // Redirect to the desired page after successful login
+                        window.location.href = '/login/doLogin/' + email;
+                    },
+                    error: function(error) {
+                        $('#login-message').text("Invalid username or password.");
+                    }
+                });
+            });
+
+            $('#registerbutton').click(function() {
+                // Redirect to the register page or any desired page
+                window.location.href = '/register';
+            });
+        });
+    </script>
+</body>
+</html>

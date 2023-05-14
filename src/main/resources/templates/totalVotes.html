@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Total Votes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<h2>Total Votes</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Candidate Name</th>
+        <th>Total Votes</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="candidate : ${candidates}">
+        <td th:text="${candidate.firstname}"></td>
+        <td th:text="${candidate.numberOfVotes}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<div>
+    <button type="button" id="logout-button">Logout</button>
+</div>
+<script>
+        $(document).ready(function() {
+            // Logout button click event
+            $('#logout-button').click(function() {
+                // Remove the JWT token from local storage
+                localStorage.removeItem('access_token');
+                // Redirect to the logout page or any desired page
+                window.location.href = '/';
+            });
+        });
+    </script>
+</body>
+</html>
