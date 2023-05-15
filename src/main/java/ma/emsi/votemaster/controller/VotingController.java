@@ -3,6 +3,7 @@ package ma.emsi.votemaster.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import ma.emsi.votemaster.repository.UserRepository;
+import ma.emsi.votemaster.user.Role;
 import ma.emsi.votemaster.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -97,5 +98,23 @@ public class VotingController {
             return "voted.html";
         }
         return "alreadyVoted.html";
+    }
+
+    @GetMapping("/admin")
+    public String adminActivity(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("citizen");
+        if (user == null || user.getRole() != Role.ADMIN) {
+            // If the user is not logged in or is not an admin, redirect to login page
+            return "/login";
+        }
+
+        // Get all users from the UserRepository
+        List<User> users = userRepository.findAll();
+
+        // Add the list of users to the model
+        model.addAttribute("users", users);
+
+        // Return the adminActivity.html template
+        return "adminActivity.html";
     }
 }

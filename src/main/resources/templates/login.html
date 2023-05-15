@@ -4,32 +4,67 @@
     <title>Login Page</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="jwt-decode.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <style>
+    body {
+        background-image: url('voting.webp');
+        background-size: cover;
+        background-position: center;
+    }
+</style>
 </head>
-<body>
-<h2>Login</h2>
-
-<div id="login-message"></div>
-
-<form id="login-form">
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required />
+<body class="bg-light" style="body">
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="height:100vh">
+        <div class="col-sm-6 col-md-4">
+            <h2 class="text-center mb-4">Welcome to the E-Vote Online Election Web App!</h2>
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Login</h3>
+                </div>
+                <div class="card-body">
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required />
+                        </div>
+                        <button type="button" class="btn btn-info btn-block" id="login-button">Login</button>
+                        <hr class="my-4">
+                        <p class="text-center">Don't have an account? <a href="/register" id="registerbutton">Register Here</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
+</div>
+<footer class="bg-dark text-light py-3 mt-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                &copy; MatrixcsYounes 2023
+            </div>
+            <div class="col-sm-6 text-right">
+                <a href="https://github.com/MatrixcsYounes" target="_blank">
+                    <i class="fab fa-github fa-lg mr-3"></i>
+                </a>
+            </div>
+        </div>
     </div>
-    <div>
-        <button type="button" id="login-button">Login</button>
-    </div>
+</footer>
 
-    <div>
-        <button type="button" id="registerbutton">Register</button>
-    </div>
-
-
-</form>
-
+</body>
 <script>
         $(document).ready(function() {
             // Check if JWT token already exists in local storage
