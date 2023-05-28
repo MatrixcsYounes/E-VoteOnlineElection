@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login Page</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -7,9 +7,8 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
+          crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
@@ -19,19 +18,187 @@
         background-size: cover;
         background-position: center;
     }
-</style>
+    .login-form-container {
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 40px 30px 30px 30px;
+        border-radius: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        transform: translate(-50%, -50%);
+        transition: transform 300ms, box-shadow 300ms;
+        box-shadow: 5px 10px 10px rgba(2, 128, 144, 0.2);
+    }
+    .login-form-container::before,
+    .login-form-container::after {
+        content: '';
+        position: absolute;
+        width: 1200px;
+        height: 1000px;
+        border-top-left-radius: 40%;
+        border-top-right-radius: 45%;
+        border-bottom-left-radius: 35%;
+        border-bottom-right-radius: 40%;
+        z-index: -1;
+    }
+    .login-form-container::before {
+        left: 40%;
+        bottom: -130%;
+        background-color: rgba(69, 105, 144, 0.15);
+        animation: waves 6s infinite linear;
+    }
+    .login-form-container::after {
+        left: 35%;
+        bottom: -125%;
+        background-color: rgba(2, 128, 144, 0.2);
+        animation: waves 7s infinite;
+    }
+    .login-form-container > input {
+        font-family: 'Asap', sans-serif;
+        display: block;
+        border-radius: 5px;
+        font-size: 16px;
+        background: white;
+        width: 100%;
+        border: 0;
+        padding: 10px 10px;
+        margin: 15px -10px;
+    }
+    .login-form-container > button {
+        font-family: 'Asap', sans-serif;
+        cursor: pointer;
+        color: #fff;
+        font-size: 16px;
+        text-transform: uppercase;
+        width: 80px;
+        border: 0;
+        padding: 10px 0;
+        margin-top: 10px;
+        margin-left: -5px;
+        border-radius: 5px;
+        background-color: rgba(244, 91, 105, 1);
+        transition: background-color 300ms;
+    }
+    .login-form-container > button:hover {
+        background-color: rgba(244, 91, 105, 0.95);
+    }
+    @keyframes waves {
+        from { transform: rotate(0); }
+        to { transform: rotate(360deg); }
+    }
+    .button-82-pushable {
+        position: relative;
+        border: none;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        outline-offset: 4px;
+        transition: filter 250ms;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+}
+
+    .button-82-shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background: hsl(0deg 0% 0% / 0.25);
+        will-change: transform;
+        transform: translateY(2px);
+        transition:
+            transform
+            600ms
+            cubic-bezier(.3, .7, .4, 1);
+    }
+
+    .button-82-edge {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background: linear-gradient(90deg, rgba(5,10,52,1) 0%, rgba(0,39,255,1) 50%, rgba(7,40,70,1) 100%);
+    }
+
+    .button-82-front {
+        display: block;
+        position: relative;
+        padding: 12px 27px;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        color: white;
+        background: blue;
+        will-change: transform;
+        transform: translateY(-4px);
+        transition:
+            transform
+            600ms
+            cubic-bezier(.3, .7, .4, 1);
+    }
+
+    @media (min-width: 768px) {
+        .button-82-front {
+            font-size: 1.25rem;
+            padding: 12px 42px;
+        }
+    }
+
+    .button-82-pushable:hover {
+        filter: brightness(110%);
+        -webkit-filter: brightness(110%);
+    }
+
+    .button-82-pushable:hover .button-82-front {
+        transform: translateY(-6px);
+        transition:
+            transform
+            250ms
+            cubic-bezier(.3, .7, .4, 1.5);
+    }
+
+    .button-82-pushable:active .button-82-front {
+        transform: translateY(-2px);
+        transition: transform 34ms;
+    }
+
+    .button-82-pushable:hover .button-82-shadow {
+        transform: translateY(4px);
+        transition:
+            transform
+            250ms
+            cubic-bezier(.3, .7, .4, 1.5);
+    }
+
+    .button-82-pushable:active .button-82-shadow {
+        transform: translateY(1px);
+        transition: transform 34ms;
+    }
+
+    .button-82-pushable:focus:not(:focus-visible) {
+        outline: none;
+    }
+    </style>
+
 </head>
 <body class="bg-light" style="body">
 <div class="container">
     <div class="row justify-content-center align-items-center" style="height:100vh">
         <div class="col-sm-6 col-md-4">
-            <h2 class="text-center mb-4 text-white">Welcome to the E-Vote Online Election Web App!</h2>
-            <div class="card border-info">
-                <div class="card-header bg-info text-white">
-                    <h3 class="mb-0">Login</h3>
-                </div>
+
+            <div class="login-form-container">
                 <div class="card-body">
                     <form id="login-form">
+                        <h2 class="text-center">Welcome to the E-Vote Online Election Web App!</h2>
                         <div class="form-group">
                             <label for="email">Email:</label>
                             <input type="email" class="form-control" id="email" name="email" required />
@@ -40,7 +207,7 @@
                             <label for="password">Password:</label>
                             <input type="password" class="form-control" id="password" name="password" required />
                         </div>
-                        <button type="button" class="btn btn-info btn-block" id="login-button">Login</button>
+                        <button class="button-82-pushable" type="button" id="login-button"><span class="button-82-shadow"></span><span class="button-82-edge"></span><span class="button-82-front text">Login</span></button>
                         <hr class="my-4">
                         <p class="text-center">Don't have an account? <a href="/register" id="registerbutton">Register Here</a></p>
                     </form>
@@ -63,52 +230,50 @@
         </div>
     </div>
 </footer>
-
 </body>
 <script>
-        $(document).ready(function() {
-            // Check if JWT token already exists in local storage
-            var jwtToken = localStorage.getItem('access_token');
-            if (jwtToken) {
-                var jwt = jwt_decode(jwtToken);
-                var email = jwt.sub;
-                window.location.href = '/login/doLogin/' + email;
-            }
+    $(document).ready(function() {
+        // Check if JWT token already exists in local storage
+        var jwtToken = localStorage.getItem('access_token');
+        if (jwtToken) {
+            var jwt = jwt_decode(jwtToken);
+            var email = jwt.sub;
+            window.location.href = '/login/doLogin/' + email;
+        }
 
-            $('#login-button').click(function() {
-                var email = $('#email').val();
-                var password = $('#password').val();
+        $('#login-button').click(function() {
+            var email = $('#email').val();
+            var password = $('#password').val();
 
-                var loginData = {
-                    email: email,
-                    password: password
-                };
+            var loginData = {
+                email: email,
+                password: password
+            };
 
-                $.ajax({
-                    url: '/login',
-                    type: 'POST',
-                    data: JSON.stringify(loginData),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        $('#login-message').text("Login successful!");
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: JSON.stringify(loginData),
+                contentType: 'application/json',
+                success: function(response) {
+                    $('#login-message').text("Login successful!");
 
-                        // Save JWT token in local storage
-                        localStorage.setItem('access_token', response.access_token);
+                    // Save JWT token in local storage
+                    localStorage.setItem('access_token', response.access_token);
 
-                        // Redirect to the desired page after successful login
-                        window.location.href = '/login/doLogin/' + email;
-                    },
-                    error: function(error) {
-                        $('#login-message').text("Invalid username or password.");
-                    }
-                });
-            });
-
-            $('#registerbutton').click(function() {
-                // Redirect to the register page or any desired page
-                window.location.href = '/register';
+                    // Redirect to the desired page after successful login
+                    window.location.href = '/login/doLogin/' + email;
+                },
+                error: function(error) {
+                    $('#login-message').text("Invalid username or password.");
+                }
             });
         });
-    </script>
-</body>
+
+        $('#registerbutton').click(function() {
+           // Redirect to the register page or any desired page
+            window.location.href = '/register';
+        });
+    });
+</script>
 </html>
