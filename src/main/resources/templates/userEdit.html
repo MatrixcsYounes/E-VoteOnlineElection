@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Edit User</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="jwt-decode.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#edit-user-form').submit(function(e) {
@@ -15,11 +17,11 @@
 
                 $.ajax({
                     url: url,
-                    type: 'POST',
+                    type: 'PATCH',
                     data: form.serialize(),
                     success: function(response) {
                         // User successfully edited, redirect to admin page
-                        window.location.href = '/admin';
+                        window.location.href = '/';
                     },
                     error: function(error) {
                         // Handle error if necessary
@@ -32,21 +34,28 @@
 </head>
 <body>
 <h1>Edit User</h1>
-<form id="edit-user-form" method="POST" action="/admin/userset/{email}">
+<form id="edit-user-form" method="POST" class="col-md-6 offset-3" action="/admin/userset/{email}">
     <!-- Add the form fields for editing the user -->
     <div class="form-group">
         <label for="firstname">First Name:</label>
-        <input type="text" class="form-control" id="firstname" name="firstname" value="{user.firstname}" required>
+        <input type="text" class="form-control" id="firstname" name="firstname" th:value="${user.firstname}" required>
     </div>
     <div class="form-group">
         <label for="lastname">Last Name:</label>
-        <input type="text" class="form-control" id="lastname" name="lastname" value="{user.lastname}" required>
+        <input type="text" class="form-control" id="lastname" name="lastname" th:value="${user.lastname}" required>
     </div>
     <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" name="email" value="{user.email}" required>
+        <input type="email" class="form-control" id="email" name="email" th:value="${user.email}" required>
     </div>
-    <!-- Add more form fields if necessary -->
+    <div class="form-group">
+        <label for="role">Role:</label>
+        <select class="form-control" id="role" name="role" required>
+            <option th:value="USER" ${user.role == 'USER' ? 'selected' : ''}>User</option>
+            <option th:value="CANDIDATE" ${user.role == 'CANDIDATE' ? 'selected' : ''}>Candidate</option>
+            <option th:value="ADMIN" ${user.role == 'ADMIN' ? 'selected' : ''}>Admin</option>
+        </select>
+    </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>
 </body>

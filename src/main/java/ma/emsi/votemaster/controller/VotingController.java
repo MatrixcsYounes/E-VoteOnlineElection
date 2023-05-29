@@ -47,66 +47,70 @@ public class VotingController {
     public String doLogin(@PathVariable String email, Model model, HttpSession session) throws Exception {
 
         logger.info("Getting the citizen from the database");
-        Optional<User> opt=userRepository.findByEmail(email);
+        Optional<User> opt = userRepository.findByEmail(email);
         User citizen = opt.get();
         logger.info("Putting citizen into session");
-        session.setAttribute("citizen",citizen);
+        session.setAttribute("citizen", citizen);
 
-        if (Objects.equals(citizen.getRole().toString(),"ADMIN")){
+        if (Objects.equals(citizen.getRole().toString(), "ADMIN")) {
             List<User> candidates = userRepository.findByRole(Role.CANDIDATE);
             List<User> users = userRepository.findByRole(Role.USER);
             model.addAttribute("candidates", candidates);
             model.addAttribute("users", users);
             logger.info("Admin Login");
             return "/adminActivity.html";
-        } else if(Objects.equals(citizen.getRole().toString(),"CANDIDATE")){
+        } else if (Objects.equals(citizen.getRole().toString(), "CANDIDATE")) {
             logger.info("Candidate login");
             List<User> candidates = userRepository.findAll();
             List<User> onlyCand = new ArrayList<User>();
-            for (int i = 0; i < candidates.size(); i++){
-                if (Objects.equals(candidates.get(i).getRole().toString(), "CANDIDATE")){
+            for (int i = 0; i < candidates.size(); i++) {
+                if (Objects.equals(candidates.get(i).getRole().toString(), "CANDIDATE")) {
                     onlyCand.add(candidates.get(i));
                 }
             }
-            model.addAttribute("candidates",onlyCand);
+            model.addAttribute("candidates", onlyCand);
             return "/totalVotes.html";
-        }else{
-        if(!citizen.isHasvoted()){
-            logger.info("Putting candidates into model");
-            List<User> candidates = userRepository.findAll();
-            List<User> onlyCand = new ArrayList<User>();
-            for (int i = 0; i < candidates.size(); i++){
-                if (Objects.equals(candidates.get(i).getRole().toString(), "CANDIDATE")){
-                    onlyCand.add(candidates.get(i));
+        } else {
+            if (!citizen.isHasvoted()) {
+                logger.info("Putting candidates into model");
+                List<User> candidates = userRepository.findAll();
+                List<User> onlyCand = new ArrayList<User>();
+                for (int i = 0; i < candidates.size(); i++) {
+                    if (Objects.equals(candidates.get(i).getRole().toString(), "CANDIDATE")) {
+                        onlyCand.add(candidates.get(i));
+                    }
                 }
-            }
-            model.addAttribute("users",onlyCand);
-            return "/performVote.html";
-        }else{
-            return "/alreadyVoted.html";
+                model.addAttribute("users", onlyCand);
+                return "/performVote.html";
+            } else {
+                return "/alreadyVoted.html";
             }
         }
     }
+
 
     @GetMapping("voteFor")
-    public String voteFor(@RequestParam("id") Integer id, HttpSession session){
+    public String voteFor(@RequestParam("id") Integer id, HttpSession session) {
 
-        Optional<User> opt=userRepository.findById(id);
-        User citizen = opt.get();
+        Optional<User> opt = userRepository.findById(id);
+        User candidate = opt.get();
 
-
-        if (!citizen.isHasvoted()){
-            citizen.setHasvoted(true);
-
-            logger.info("voting for candidate " + citizen.getFirstname() + " " + citizen.getLastname());
-            citizen.setNumberOfVotes(citizen.getNumberOfVotes()+1);
-
-            userRepository.save(citizen);
-
-            return "voted.html";
+        // Check if the user has already voted
+        User citizen = (User) session.getAttribute("citizen");
+        if (citizen.isHasvoted()) {
+            return "alreadyVoted.html";
         }
-        return "alreadyVoted.html";
+
+        // Update the candidate's vote count and set the user as voted
+        candidate.setNumberOfVotes(candidate.getNumberOfVotes() + 1);
+        citizen.setHasvoted(true);
+
+        userRepository.save(candidate);
+        userRepository.save(citizen);
+
+        return "voted.html";
     }
+
 
     @GetMapping("/admin/useradd")
     public String addUserForm(Model model) {
@@ -139,12 +143,10 @@ public class VotingController {
         return "userEdit.html";
     }
 
-    @PostMapping("/admin/userset/{email}")
-    public String editUser(@PathVariable("email") String email, @ModelAttribute User updatedUser) {
+    @PatchMapping("/admin/userset/{email}")
+    public String editUser(@ModelAttribute User updatedUser) {
         // Find the existing user by email in the UserRepository
-        Optional<User> userOpt = userRepository.findByEmail(email);
-        User user = userOpt.orElseThrow(() -> new IllegalArgumentException("User not found"));
-
+        User user = userRepository.findByEmail(updatedUser.getEmail()).orElseThrow();
         // Update the user object with the values from the updatedUser object
         user.setLastname(updatedUser.getLastname());
         user.setEmail(updatedUser.getEmail());
@@ -153,7 +155,7 @@ public class VotingController {
         userRepository.save(user);
 
         // Redirect to the admin page
-        return "redirect:/admin";
+        return "/adminActivity.html";
     }
 
     @GetMapping("/admin/userdelete/{email}")

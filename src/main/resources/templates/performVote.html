@@ -3,17 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <title>Perform a vote</title>
+    <script src="jwt-decode.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
-<div th:each="user : ${users}">
-    Click to vote for:
-    <a th:href="@{/voteFor(id=${user.id})}" th:text="${user.firstname}">Click</a>
+<nav class="navbar navbar-light bg-dark">
+    <a class="navbar-brand text-light" href="/">Home</a>
+    <div class="justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <button type="button" class="btn btn-link btn-danger" id="logout-button">
+                    Logout <i class="fa fa-sign-out"></i>
+                </button>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <h1>Choose a candidate to vote for.</h1>
+    <div class="row">
+        <div class="col-md-4" th:each="user : ${users}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${user.firstname}"></h5>
+                    <p class="card-text">Candidate ID: <span th:text="${user.id}"></span></p>
+                    <!-- Add more card details if necessary -->
+                    <a th:href="@{/voteFor(id=${user.id})}" class="btn btn-primary">Vote</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div>
-    <button type="button" id="logout-button">Logout</button>
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to vote for <span id="candidateName"></span>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a id="confirmVoteButton" href="#" class="btn btn-primary">Vote</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -29,6 +71,14 @@
                 window.location.href = '/';
             });
 
+            // Vote button click event
+            $('.vote-button').click(function(e) {
+                e.preventDefault();
+                var candidateName = $(this).closest('.card-body').find('.card-title').text();
+                $('#candidateName').text(candidateName);
+                $('#confirmVoteButton').attr('href', $(this).attr('href'));
+                $('#confirmModal').modal('show');
+        });
 
 
         });

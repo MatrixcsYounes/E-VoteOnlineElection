@@ -96,8 +96,9 @@
                         $('#registration-message').text("Registration successful!");
                         window.location.href = '/login';
                     },
-                    error: function(error) {
-                        $('#registration-message').text("Error occurred during registration.");
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.responseJSON.message;
+                        $('#registration-message').text("Error occurred during registration: " + errorMessage);
                     }
                 });
             });
