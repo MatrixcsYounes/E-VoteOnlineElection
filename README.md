@@ -24,7 +24,7 @@ Application.properties settings:
 ```
 spring.datasource.url=jdbc:mysql://localhost:3306/VoteMaster?createDatabaseIfNotExist=true
 ```
-## *the user that will use the DB is "root", with a passworx "root"*
+## *the user that will use the DB is "root", with a password "root"*
 ```
 spring.datasource.username=root
 spring.datasource.password=root
